@@ -1,5 +1,11 @@
 <template>
 <div class="Desktop1 w-full flex-col justify-start items-start inline-flex">
+  <div class="whatsapp">
+    <a href="https://wa.me/+554184290372">
+      <img src="WhatsApp.png" alt="" style="width: 64px;">
+    </a>
+  </div>
+
   <div class="Navbar self-stretch px-4 md:px-24 py-4 bg-veb justify-between items-center gap-5 inline-flex">
     <div class="VenezolanosEnBrazil text-sky-900 text-2xl font-bold">VENEZOLANOS EN BRAZIL</div>
     <div class="Frame3  self-stretch px-5 justify-end items-center gap-5 flex" v-if="false">
@@ -50,7 +56,12 @@
             </div>
           </div>
           <div class="bg-green-500 p-4 text-white" v-if="success">
-            {{ success }}
+            <p>
+              {{ success }}
+            </p>
+            <a href="https://wa.me/+554184290372" style="text-decoration: underline; font-weight: bold;">
+              Contactanos por Whatsapp a este numero
+            </a>
           </div>
           <div class="bg-red-500 p-4 text-white" v-if="error">
             {{ error }}
@@ -141,7 +152,6 @@ export default {
       if (this.activeRequest) { return true; }
 
       try {
-        let textBody = ""
 
         let jsonBody = {
           "messaging_product": "whatsapp",
@@ -201,5 +211,11 @@ html, .bg-veb {
 }
 .hero-image {
   height: 66vh;
+}
+.whatsapp {
+  position: fixed;
+  z-index: 100000;
+  bottom: 2rem;
+  right: 2rem;
 }
 </style>
