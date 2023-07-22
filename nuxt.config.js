@@ -1,6 +1,9 @@
 require('dotenv').config()
-
 export default {
+  env: {
+    WHATSAPP_TOKEN: process.env.WHATSAPP_TOKEN,
+  },
+  
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 

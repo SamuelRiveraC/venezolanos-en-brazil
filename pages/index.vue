@@ -130,6 +130,11 @@ export default {
       success: false,
     }
   },
+  created () {
+    console.log(
+      process.env.WHATSAPP_TOKEN
+      )
+  },
   methods: {
     resetState () {
       this.activeRequest = this.error = this.success = false
