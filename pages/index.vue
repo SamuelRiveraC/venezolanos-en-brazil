@@ -130,11 +130,6 @@ export default {
       success: false,
     }
   },
-  created () {
-    console.log(
-      process.env.WHATSAPP_TOKEN
-      )
-  },
   methods: {
     resetState () {
       this.activeRequest = this.error = this.success = false
@@ -177,7 +172,7 @@ export default {
           jsonBody ,
           { headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + process.env.WHATSAPP_TOKEN,
+            'Authorization': 'Bearer EAAEOkRRwhsoBAGHGTYPpya5hzih5ukq8cGmXz5WicguKLBAGPDPWVZBEyYFHVBHH33OfL2evBL3uZAdSspVxBoI69XJjNQzVd4REnXpkgeAuGEy3I70KDP34EdmRtVEQcRvDQpPX4kw0XRjJukjO68cLvs5TM5gyUbfpiZBoBnZBOBGTNTo7oGrgrPDnJJVnvdkgcjSt8wZDZ',
           }
         }).then(response => {
           console.log('Form submitted successfully!', response);
