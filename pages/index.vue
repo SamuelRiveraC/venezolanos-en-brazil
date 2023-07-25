@@ -61,9 +61,11 @@
               <input v-model="formData.phone" type="text" class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full" maxlength="20">
             </div>
             
-            <div class="flex-col justify-start items-start gap-3 inline-flex">
+            <div class="flex-col justify-start items-start gap-3 inline-flex" style="position: relative;">
               <label class="text-sm text-gray-700">Banco*</label>
-              <select class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full " v-model="formData.banco">
+              <span @click="()=>this.formData.banco = ''" v-if="formData.banco == 'Otros'" style="position: absolute; bottom: 0; line-height:40px; right: 1rem; font-weight: bold; cursor: pointer;">&#10005;</span>
+              <input v-if="formData.banco == 'Otros'" v-model="otrobanco" type="text" class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full">
+              <select v-else class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 w-full p-1.5 " v-model="formData.banco">
                 <option> 0156 - 100%BANCO</option>
                 <option> 0196 - ABN AMRO BANK</option>
                 <option> 0172 - BANCAMIGA BANCO MICROFINANCIERO, C.A.</option>
@@ -103,8 +105,8 @@
             </div>
 
             <div class="flex-col justify-start items-start gap-3 inline-flex">
-              <label class="text-sm text-gray-700">WhatsApp de contacto*</label>        
-              <input v-model="formData.whatsapp" type="text" class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full" maxlength="20">
+              <label class="text-sm text-gray-700">WhatsApp de contacto*</label>
+              <vue-tel-input v-model="formData.whatsapp" mode="international" class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full"></vue-tel-input>
             </div>
 
             <div class="col-span-2 bg-green-500 p-4 text-white" v-if="success">
@@ -147,16 +149,19 @@
       -->
     </div>
     <div class="flex flex-col justify-center items-center">
+
       <img class="hero-image" src="venezolanos-en-brazil.png" />
     </div>
   </div>
 </div>
 </template>
-
+<style src="vue-tel-input/dist/vue-tel-input.css"></style>
 <script>
 import axios from "axios"
+import { VueTelInput } from 'vue-tel-input';
 export default {
   name: 'IndexPage',
+  components: { VueTelInput },
   data () {
     return {
       ves: 6,
@@ -180,6 +185,7 @@ export default {
         cedula: "",
         whatsapp: "",
       },
+      otrobanco: "",
       error: false,
       success: false,
     }
@@ -193,7 +199,13 @@ export default {
       return `${this.formData.monto} ${currency}`
     },
     whatsapp_phone () {
-      return `https://wa.me/+${this.formData.whatsapp}`
+      let phone = this.formData.whatsapp
+      phone = phone.replace(' ','')
+      return `https://wa.me/${phone}`
+    },
+    finalBanco () {
+      if (this.formData.banco == "Otros") return this.otrobanco
+      return this.formData.banco
     }
   },
   methods: {
@@ -201,7 +213,7 @@ export default {
       this.activeRequest = this.error = this.success = false
     },
     submitForm() {
-      let finalMessage = `METODO DE TRANSFERENCIA: ${this.formData.tipo}\nMONTO A TRANSFERIR: ${this.finalPrice} \nTITULAR DE LA CUENTA: ${this.formData.titular}\nBANCO: ${this.formData.banco}\nMETODO DE PAGO: ${this.formData.metodo}\nNUMERO DE CUENTA: ${this.formData.cuenta}\nCEDULA DE IDENTIDAD: ${this.formData.cedula}\nCELULAR: ${this.formData.phone}\nWHATSAPP DE CONTACTO: ${this.whatsapp_phone}`
+      let finalMessage = `METODO DE TRANSFERENCIA: ${this.formData.tipo}\nMONTO A TRANSFERIR: ${this.finalPrice} \nTITULAR DE LA CUENTA: ${this.formData.titular}\nBANCO: ${this.finalBanco}\nMETODO DE PAGO: ${this.formData.metodo}\nNUMERO DE CUENTA: ${this.formData.cuenta}\nCEDULA DE IDENTIDAD: ${this.formData.cedula}\nCELULAR: ${this.formData.phone}\nWHATSAPP DE CONTACTO: ${this.whatsapp_phone}`
       console.log(finalMessage)
       if (
         this.formData.tipo == "" ||
@@ -283,5 +295,8 @@ html, .bg-veb {
   z-index: 100000;
   bottom: 2rem;
   right: 2rem;
+}
+.vue-tel-input {
+  padding: 0;
 }
 </style>
