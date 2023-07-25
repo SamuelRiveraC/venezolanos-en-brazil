@@ -7,8 +7,8 @@
   </div>
 
   <div class="Navbar self-stretch px-4 md:px-24 py-4 bg-veb justify-between items-center gap-5 inline-flex">
-    <div class="VenezolanosEnBrazil text-sky-900 text-2xl font-bold">VENEZOLANOS EN BRAZIL</div>
-    <div class="Frame3  self-stretch px-5 justify-end items-center gap-5 flex" v-if="false">
+    <div class="text-sky-900 text-2xl font-bold">VENEZOLANOS EN BRAZIL</div>
+    <div class="self-stretch px-5 justify-end items-center gap-5 flex" v-if="false">
       <a v-for="link in navbar" :key="link.url" class="text-black text-base font-normal" :href="link.url" > {{ link.name }} </a>
     </div>
   </div>
@@ -18,66 +18,119 @@
         REALIZA CAMBIOS DE<br/>BOLÍVARES  Y REALES
       </div>
       <div class="flex flex-col items-center rounded-lg gap-5">
-        <div class="bg-white p-5 flex-col justify-center content-center items-center rounded-lg gap-5 flex">
-          <div class="Row justify-start items-start gap-5 lg:inline-flex">
-            <div class="Input flex-col justify-start items-start gap-3 inline-flex">
-              <label for="first_name" class="text-gray-700">Nombres</label>
-              <input v-model="formData.first_name" type="text" id="first_name" name="first_name" class="border-solid border border-gray-300 rounded-md focus:ring focus:ring-opacity-50">
+        <div class="bg-white p-5 rounded-lg gap-5">
+          <div class="grid grid-cols-2 gap-5">
+            <div class="flex-col justify-start items-start gap-3 inline-flex">
+              <label class="text-sm text-gray-700">Método de Transferencia*</label>
+              <select class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full " v-model="formData.tipo">
+                <option>Bolivares a Reais</option>
+                <option>Reais a Bolivares</option>
+              </select>
             </div>
-            <div class="Input flex-col justify-start items-start gap-3 inline-flex">
-              <label for="last_name" class="text-gray-700">Apellidos</label>
-              <input v-model="formData.last_name" type="text" id="last_name" name="last_name" class="border-solid border border-gray-300 rounded-md focus:ring focus:ring-opacity-50">
+            <div class="flex-col justify-start items-start gap-3 inline-flex" style="position: relative;">
+              <span v-if="formData.tipo == 'Bolivares a Reais'" style="position: absolute; bottom: 0; line-height:40px; right: 2rem;">
+                Bs$
+              </span>
+              <span v-if="formData.tipo == 'Reais a Bolivares'" style="position: absolute; bottom: 0; line-height:40px; right: 2rem;">
+                R$
+              </span>
+              <label class="text-sm text-gray-700">Monto a transferir*</label>
+              <input type="number" class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full" v-model="formData.monto">
             </div>
-          </div>
-          <div class="Row justify-start items-start gap-5 lg:inline-flex">
-            <div class="Input flex-col justify-start items-start gap-3 inline-flex">
-              <label for="email" class="text-gray-700">Email</label>
-              <input v-model="formData.email" type="email" id="email" name="email" class="border-solid border border-gray-300 rounded-md focus:ring focus:ring-opacity-50">
+            <div class="flex-col justify-start items-start gap-3 inline-flex">
+              <label class="text-sm text-gray-700">Titular de la cuenta*</label>
+              <input type="text"  class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full " v-model="formData.titular">
             </div>
-            <div class="Input flex-col justify-start items-start gap-3 inline-flex">
-              <label for="phone" class="text-gray-700">Telefono</label>
-              <input v-model="formData.phone" type="text" id="phone" name="phone" class="border-solid border border-gray-300 rounded-md focus:ring focus:ring-opacity-50">
+            <div class="flex-col justify-start items-start gap-3 inline-flex">
+              <label class="text-sm text-gray-700">Cedula*</label>        
+              <input v-model="formData.cedula" type="text" class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full" maxlength="20">
             </div>
-          </div>
-          <div class="Row justify-start items-start gap-5 lg:inline-flex">
-            <div class="Input flex-col justify-start items-start gap-3 inline-flex">
-              <label for="banking" class="text-gray-700">Banco</label>
-              <input v-model="formData.banking" type="text" id="banking" name="banking" class="border-solid border border-gray-300 rounded-md focus:ring focus:ring-opacity-50">
+            <div class="flex-col justify-start items-start gap-3 inline-flex">
+              <label class="text-sm text-gray-700">Método de pago*</label>
+              <select class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full " v-model="formData.metodo">
+                <option>Pago movil</option>
+                <option>Transferencia bancaria</option>
+              </select>
             </div>
-            <div class="Input flex-col justify-start items-start gap-3 inline-flex">
-              <label for="id_number" class="text-gray-700">Cedula de Identidad</label>
-              <input v-model="formData.id_number" type="text" id="id_number" name="id_number" class="border-solid border border-gray-300 rounded-md focus:ring focus:ring-opacity-50" maxlength="10">
+            <div class="flex-col justify-start items-start gap-3 inline-flex" v-show="formData.metodo == 'Transferencia bancaria'">
+              <label class="text-sm text-gray-700">Numero de cuenta</label>        
+              <input v-model="formData.cuenta" type="text" class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full" maxlength="20">
             </div>
-          </div>
-          <div class="Row justify-start items-start gap-5 lg:inline-flex">
-            <div class="Input flex-col justify-start items-start gap-3 inline-flex">
-              <label for="account_number" class="text-gray-700">Numero de Cuenta</label>        
-              <input v-model="formData.account_number" type="text" id="account_number" name="account_number" class="border-solid border border-gray-300 rounded-md focus:ring focus:ring-opacity-50" maxlength="20">
+            <div class="flex-col justify-start items-start gap-3 inline-flex" v-show="formData.metodo == 'Pago movil'">
+              <label class="text-sm text-gray-700">Celular</label>        
+              <input v-model="formData.phone" type="text" class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full" maxlength="20">
             </div>
-          </div>
-          <div class="bg-green-500 p-4 text-white" v-if="success">
-            <p>
-              {{ success }}
-            </p>
-            <a href="https://wa.me/+554184290372" style="text-decoration: underline; font-weight: bold;">
-              Contactanos por Whatsapp a este numero
-            </a>
-          </div>
-          <div class="bg-red-500 p-4 text-white" v-if="error">
-            {{ error }}
-          </div>
-          <div class="Button flex-col justify-center items-center gap-5 flex">
-            <div class="Button px-5 rounded flex-col justify-center items-center flex">
-              <button @click="submitForm()" :disabled="activeRequest" class="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 flex-row justify-center items-center flex align-center">
-                <span class="mx-4">Contactanos</span>
-                <span v-show="activeRequest">
-                  <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                      <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="white"/>
-                  </svg>
-                    <span class="sr-only">Loading...</span>
-                </span>
-              </button>
+            
+            <div class="flex-col justify-start items-start gap-3 inline-flex">
+              <label class="text-sm text-gray-700">Banco*</label>
+              <select class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full " v-model="formData.banco">
+                <option> 0156 - 100%BANCO</option>
+                <option> 0196 - ABN AMRO BANK</option>
+                <option> 0172 - BANCAMIGA BANCO MICROFINANCIERO, C.A.</option>
+                <option> 0171 - BANCO ACTIVO BANCO COMERCIAL, C.A.</option>
+                <option> 0166 - BANCO AGRICOLA</option>
+                <option> 0175 - BANCO BICENTENARIO</option>
+                <option> 0128 - BANCO CARONI, C.A. BANCO UNIVERSAL</option>
+                <option> 0164 - BANCO DE DESARROLLO DEL MICROEMPRESARIO</option>
+                <option> 0102 - BANCO DE VENEZUELA S.A.I.C.A.</option>
+                <option> 0114 - BANCO DEL CARIBE C.A.</option>
+                <option> 0149 - BANCO DEL PUEBLO SOBERANO C.A.</option>
+                <option> 0163 - BANCO DEL TESORO</option>
+                <option> 0176 - BANCO ESPIRITO SANTO, S.A.</option>
+                <option> 0115 - BANCO EXTERIOR C.A.</option>
+                <option> 0003 - BANCO INDUSTRIAL DE VENEZUELA.</option>
+                <option> 0173 - BANCO INTERNACIONAL DE DESARROLLO, C.A.</option>
+                <option> 0105 - BANCO MERCANTIL C.A.</option>
+                <option> 0191 - BANCO NACIONAL DE CREDITO</option>
+                <option> 0116 - BANCO OCCIDENTAL DE DESCUENTO.</option>
+                <option> 0138 - BANCO PLAZA</option>
+                <option> 0108 - BANCO PROVINCIAL BBVA</option>
+                <option> 0104 - BANCO VENEZOLANO DE CREDITO S.A.</option>
+                <option> 0168 - BANCRECER S.A. BANCO DE DESARROLLO</option>
+                <option> 0134 - BANESCO BANCO UNIVERSAL</option>  
+                <option> 0177 - BANFANB</option>
+                <option> 0146 - BANGENTE</option>
+                <option> 0174 - BANPLUS BANCO COMERCIAL C.A</option>
+                <option> 0190 - CITIBANK.</option>
+                <option> 0121 - CORP BANCA.</option>
+                <option> 0157 - DELSUR BANCO UNIVERSAL</option>
+                <option> 0151 - FONDO COMUN</option>
+                <option> 0601 - INSTITUTO MUNICIPAL DE CR&#201;DITO POPULAR</option>
+                <option> 0169 - MIBANCO BANCO DE DESARROLLO, C.A.</option>
+                <option> 0137 - SOFITASA</option>
+                <option>Otros</option>
+              </select>
+            </div>
+
+            <div class="flex-col justify-start items-start gap-3 inline-flex">
+              <label class="text-sm text-gray-700">WhatsApp de contacto*</label>        
+              <input v-model="formData.whatsapp" type="text" class="border border-solid border-gray-300 rounded-md focus:ring focus:ring-opacity-50 p-1.5 w-full" maxlength="20">
+            </div>
+
+            <div class="col-span-2 bg-green-500 p-4 text-white" v-if="success">
+              <p>
+                {{ success }}
+              </p>
+              <a href="https://wa.me/+554184290372" style="text-decoration: underline; font-weight: bold;">
+                Contactanos por Whatsapp a este numero
+              </a>
+            </div>
+            <div class="col-span-2 bg-red-500 p-4 text-white" v-if="error">
+              {{ error }}
+            </div>
+            <div class="col-span-2 flex-col justify-center items-center gap-5 flex">
+              <div class="Button px-5 rounded flex-col justify-center items-center flex">
+                <button @click="submitForm()" :disabled="activeRequest" class="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 flex-row justify-center items-center flex align-center">
+                  <span class="mx-4">Contactanos</span>
+                  <span v-show="activeRequest">
+                    <svg aria-hidden="true" class="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                        <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="white"/>
+                    </svg>
+                      <span class="sr-only">Loading...</span>
+                  </span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -116,18 +169,31 @@ export default {
         { name: "Cambios de Divisas", url: "/Cambios-de-Divisas"},
         { name: "Boletos Aereos", url: "/Boletos-Aereos"},
       ],
-      bancos : [],
       formData: {
-        first_name: '',
-        last_name: '',
-        email: '',
-        phone: '',
-        banking: '',
-        id_number: '',
-        account_number: '',
+        tipo: "Bolivares a Reais",
+        monto: "0",
+        titular: "",
+        banco: "",
+        metodo: "Pago movil",
+        cuenta: "",
+        phone: "",
+        cedula: "",
+        whatsapp: "",
       },
       error: false,
       success: false,
+    }
+  },
+  
+  computed: {
+    finalPrice () {
+      let currency = "";
+      if (this.formData.tipo == 'Bolivares a Reais') currency = "Bs$" 
+      if (this.formData.tipo == 'Reais a Bolivares') currency = "R$" 
+      return `${this.formData.monto} ${currency}`
+    },
+    whatsapp_phone () {
+      return `https://wa.me/+${this.formData.whatsapp}`
     }
   },
   methods: {
@@ -135,15 +201,16 @@ export default {
       this.activeRequest = this.error = this.success = false
     },
     submitForm() {
-
+      let finalMessage = `METODO DE TRANSFERENCIA: ${this.formData.tipo}\nMONTO A TRANSFERIR: ${this.finalPrice} \nTITULAR DE LA CUENTA: ${this.formData.titular}\nBANCO: ${this.formData.banco}\nMETODO DE PAGO: ${this.formData.metodo}\nNUMERO DE CUENTA: ${this.formData.cuenta}\nCEDULA DE IDENTIDAD: ${this.formData.cedula}\nCELULAR: ${this.formData.phone}\nWHATSAPP DE CONTACTO: ${this.whatsapp_phone}`
+      console.log(finalMessage)
       if (
-        this.formData.first_name == "" ||
-        this.formData.last_name == "" ||
-        this.formData.email == "" ||
-        this.formData.phone == "" ||
-        this.formData.banking == "" ||
-        this.formData.id_number == "" ||
-        this.formData.account_number == ""
+        this.formData.tipo == "" ||
+        this.formData.monto == "" ||
+        this.formData.titular == "" ||
+        this.formData.banco == "" ||
+        this.formData.metodo == "" ||
+        this.formData.cedula == "" ||
+        this.formData.whatsapp == ""
       ) {
         this.error = "Por favor asegurate de llenar todo los campos correctamente"
         return true
@@ -152,13 +219,12 @@ export default {
       if (this.activeRequest) { return true; }
 
       try {
-
         let jsonBody = {
           "messaging_product": "whatsapp",
           "to": "554184290372",
           "type": "text",
           "text": {
-            "body": `Nombre: ${this.formData.first_name}\nApellido: ${this.formData.last_name}\nCorreo: ${this.formData.email}\nNumero de Telefono: ${this.formData.phone}\nNombre de Banco: ${this.formData.banking}\nCedula de Identidad: ${this.formData.id_number}\nNumero de Cuenta: ${this.formData.account_number}`,
+            "body": finalMessage,
          },
          "language": {
               "code": "en_US"
